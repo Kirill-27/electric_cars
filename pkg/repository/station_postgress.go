@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"database/sql"
 	"fmt"
 	"github.com/Kirill-27/electric_cars/data"
 	"github.com/jmoiron/sqlx"
@@ -41,17 +42,27 @@ func (r *StationPostgres) GetAll() ([]data.Station, error) {
 
 	return stations, err
 }
-func (r *StationPostgres) GetById(stationId int) (data.Station, error) {
+func (r *StationPostgres) GetById(stationId int) (*data.Station, error) {
 	var station data.Station
 
 	query := fmt.Sprintf("SELECT * FROM %s WHERE id = $1", stationsTable)
 	err := r.db.Get(&station, query, stationId)
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
 
-	return station, err
+	return &station, err
 }
-func (r *StationPostgres) Delete(stationId int) error {
-	return nil
-}
+
 func (r *StationPostgres) Update(station data.Station) error {
-	return nil
+	query := fmt.Sprintf("UPDATE %s SET is_free=$1, location_x=$2, location_y=$3, value_per_min=$4,"+
+		" is_active=$5, WHERE id=$6 ", stationsTable)
+	_, err := r.db.Exec(query, station.IsFree, station.LocationX, station.LocationY, station.ValuePerMin, station.IsActive, station.Id)
+	return err
+}
+
+func (r *StationPostgres) Delete(stationId int) error {
+	query := fmt.Sprintf("DELETE FROM %s WHERE id=$1", stationsTable)
+	_, err := r.db.Exec(query, stationId)
+	return err
 }

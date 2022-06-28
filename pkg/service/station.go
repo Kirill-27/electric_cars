@@ -21,7 +21,7 @@ func (s *StationService) GetAll() ([]data.Station, error) {
 	return s.repo.GetAll()
 }
 
-func (s *StationService) GetById(stationId int) (data.Station, error) {
+func (s *StationService) GetById(stationId int) (*data.Station, error) {
 	return s.repo.GetById(stationId)
 }
 

@@ -8,4 +8,5 @@ type Customer struct {
 	Username string `json:"username" db:"username" binding:"required"`
 	Password string `json:"password" db:"password" binding:"required"`
 	Role     int    `json:"role" db:"role" binding:"required"`
+	IsActive bool   `json:"is_active" db:"is_active" binding:"required"`
 }

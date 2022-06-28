@@ -9,16 +9,11 @@ type Authorization interface {
 	CreateCustomer(customer data.Customer) (int, error)
 	GetCustomer(username, password string) (data.Customer, error)
 }
-type TodoList interface {
-}
-
-type TodoItem interface {
-}
 
 type Station interface {
 	Create(station data.Station) (int, error)
 	GetAll() ([]data.Station, error)
-	GetById(stationId int) (data.Station, error)
+	GetById(stationId int) (*data.Station, error)
 	Delete(stationId int) error
 	Update(station data.Station) error
 }

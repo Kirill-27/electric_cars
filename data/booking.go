@@ -10,4 +10,5 @@ type Booking struct {
 	StartTime       time.Time `json:"start_time" db:"start_time" binding:"required"`
 	EndTime         time.Time `json:"end_time" db:"end_time" binding:"required"`
 	IsPaid          bool      `json:"is_paid" db:"is_paid" binding:"required"`
+	IsActive        bool      `json:"is_active" db:"is_active" binding:"required"`
 }
