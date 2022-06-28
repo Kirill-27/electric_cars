@@ -11,14 +11,24 @@ type Authorization interface {
 }
 
 type Station interface {
-	Create(station data.Station) (int, error)
-	GetAll() ([]data.Station, error)
-	GetById(stationId int) (*data.Station, error)
-	Delete(stationId int) error
-	Update(station data.Station) error
+	CreateStation(station data.Station) (int, error)
+	GetAllStations() ([]data.Station, error)
+	GetStationById(stationId int) (*data.Station, error)
+	DeleteStation(stationId int) error
+	UpdateStation(station data.Station) error
+}
+
+//TODO rename
+type PaymentMethod interface {
+	Create(paymentMethod data.PaymentMethod) (int, error)
+	GetAll() ([]data.PaymentMethod, error)
+	GetById(PaymentMethodId int) (*data.PaymentMethod, error)
+	Delete(PaymentMethodId int) error
+	Update(paymentMethod data.PaymentMethod) error
 }
 
 type Repository struct {
+	PaymentMethod
 	Authorization
 	Station
 }
@@ -27,5 +37,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthPostgres(db),
 		Station:       NewStationPostgres(db),
+		PaymentMethod: NewPaymentMethodPostgres(db),
 	}
 }

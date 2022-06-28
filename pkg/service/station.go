@@ -13,22 +13,22 @@ func NewStationService(repo repository.Station) *StationService {
 	return &StationService{repo: repo}
 }
 
-func (s *StationService) Create(station data.Station) (int, error) {
-	return s.repo.Create(station)
+func (s *StationService) CreateStation(station data.Station) (int, error) {
+	return s.repo.CreateStation(station)
 }
 
-func (s *StationService) GetAll() ([]data.Station, error) {
-	return s.repo.GetAll()
+func (s *StationService) GetAllStations() ([]data.Station, error) {
+	return s.repo.GetAllStations()
 }
 
-func (s *StationService) GetById(stationId int) (*data.Station, error) {
-	return s.repo.GetById(stationId)
+func (s *StationService) GetStationById(stationId int) (*data.Station, error) {
+	return s.repo.GetStationById(stationId)
 }
 
-func (s *StationService) Delete(stationId int) error {
-	return s.repo.Delete(stationId)
+func (s *StationService) DeleteStation(stationId int) error {
+	return s.repo.DeleteStation(stationId)
 }
 
-func (s *StationService) Update(station data.Station) error {
-	return s.repo.Update(station)
+func (s *StationService) UpdateStation(station data.Station) error {
+	return s.repo.UpdateStation(station)
 }

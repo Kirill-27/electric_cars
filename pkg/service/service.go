@@ -14,21 +14,31 @@ type Authorization interface {
 }
 
 type Station interface {
-	Create(station data.Station) (int, error)
-	GetAll() ([]data.Station, error)
-	GetById(stationId int) (*data.Station, error)
-	Delete(stationId int) error
-	Update(station data.Station) error
+	CreateStation(station data.Station) (int, error)
+	GetAllStations() ([]data.Station, error)
+	GetStationById(stationId int) (*data.Station, error)
+	DeleteStation(stationId int) error
+	UpdateStation(station data.Station) error
+}
+
+type PaymentMethod interface {
+	Create(paymentMethod data.PaymentMethod) (int, error)
+	GetAll() ([]data.PaymentMethod, error)
+	GetById(paymentMethodId int) (*data.PaymentMethod, error)
+	Delete(paymentMethodId int) error
+	Update(paymentMethod data.PaymentMethod) error
 }
 
 type Service struct {
 	Authorization
 	Station
+	PaymentMethod
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		Authorization: NewAuthService(repos),
 		Station:       NewStationService(repos),
+		PaymentMethod: NewPaymentMethodService(repos),
 	}
 }

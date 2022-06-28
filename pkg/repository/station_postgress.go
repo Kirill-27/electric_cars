@@ -15,7 +15,7 @@ func NewStationPostgres(db *sqlx.DB) *StationPostgres {
 	return &StationPostgres{db: db}
 }
 
-func (r *StationPostgres) Create(station data.Station) (int, error) {
+func (r *StationPostgres) CreateStation(station data.Station) (int, error) {
 	var id int
 
 	query := fmt.Sprintf("INSERT INTO %s (is_free, location_x, location_y, value_per_min) "+
@@ -34,7 +34,7 @@ func (r *StationPostgres) Create(station data.Station) (int, error) {
 	return id, nil
 }
 
-func (r *StationPostgres) GetAll() ([]data.Station, error) {
+func (r *StationPostgres) GetAllStations() ([]data.Station, error) {
 	var stations []data.Station
 
 	query := fmt.Sprintf("SELECT * FROM %s", stationsTable)
@@ -42,7 +42,7 @@ func (r *StationPostgres) GetAll() ([]data.Station, error) {
 
 	return stations, err
 }
-func (r *StationPostgres) GetById(stationId int) (*data.Station, error) {
+func (r *StationPostgres) GetStationById(stationId int) (*data.Station, error) {
 	var station data.Station
 
 	query := fmt.Sprintf("SELECT * FROM %s WHERE id = $1", stationsTable)
@@ -54,14 +54,14 @@ func (r *StationPostgres) GetById(stationId int) (*data.Station, error) {
 	return &station, err
 }
 
-func (r *StationPostgres) Update(station data.Station) error {
-	query := fmt.Sprintf("UPDATE %s SET is_free=$1, location_x=$2, location_y=$3, value_per_min=$4,"+
-		" is_active=$5, WHERE id=$6 ", stationsTable)
-	_, err := r.db.Exec(query, station.IsFree, station.LocationX, station.LocationY, station.ValuePerMin, station.IsActive, station.Id)
+//TODO chech this
+func (r *StationPostgres) UpdateStation(station data.Station) error {
+	query := fmt.Sprintf("UPDATE %s SET is_free=$1, location_x=$2, location_y=$3, value_per_min=$4 WHERE id=$5 ", stationsTable)
+	_, err := r.db.Exec(query, station.IsFree, station.LocationX, station.LocationY, station.ValuePerMin, station.Id)
 	return err
 }
 
-func (r *StationPostgres) Delete(stationId int) error {
+func (r *StationPostgres) DeleteStation(stationId int) error {
 	query := fmt.Sprintf("DELETE FROM %s WHERE id=$1", stationsTable)
 	_, err := r.db.Exec(query, stationId)
 	return err

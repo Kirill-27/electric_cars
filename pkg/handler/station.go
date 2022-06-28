@@ -8,7 +8,7 @@ import (
 )
 
 func (h *Handler) getAllStations(c *gin.Context) {
-	stations, err := h.services.Station.GetAll()
+	stations, err := h.services.Station.GetAllStations()
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -24,7 +24,7 @@ func (h *Handler) getStationById(c *gin.Context) {
 		return
 	}
 
-	station, err := h.services.Station.GetById(id)
+	station, err := h.services.Station.GetStationById(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -51,7 +51,7 @@ func (h *Handler) createStation(c *gin.Context) {
 		return
 	}
 
-	id, err := h.services.Station.Create(station)
+	id, err := h.services.Station.CreateStation(station)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -69,7 +69,7 @@ func (h *Handler) deleteStation(c *gin.Context) {
 		return
 	}
 
-	station, err := h.services.Station.GetById(id)
+	station, err := h.services.Station.GetStationById(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -79,7 +79,7 @@ func (h *Handler) deleteStation(c *gin.Context) {
 		return
 	}
 
-	err = h.services.Station.Delete(id)
+	err = h.services.Station.DeleteStation(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -95,7 +95,7 @@ func (h *Handler) updateStation(c *gin.Context) {
 		return
 	}
 
-	station, err := h.services.Station.GetById(id)
+	station, err := h.services.Station.GetStationById(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -110,7 +110,9 @@ func (h *Handler) updateStation(c *gin.Context) {
 		return
 	}
 
-	err = h.services.Station.Update(*station)
+	station.Id = id
+
+	err = h.services.Station.UpdateStation(*station)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
