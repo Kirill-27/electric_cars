@@ -1,4 +1,4 @@
-CREATE TABLE customer
+CREATE TABLE customers
 (
     id serial not null unique,
     name     text not null,
@@ -25,14 +25,14 @@ CREATE TABLE stations
     value_per_min int not null
 );
 
-CREATE TABLE payment_method
+CREATE TABLE payment_methods
 (
     id serial not null unique,
     customer_id  int not null,
     details text not null
 );
 
-CREATE TABLE booking
+CREATE TABLE bookings
 (
     id serial not null unique,
     user_id  int not null,
