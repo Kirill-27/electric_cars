@@ -8,7 +8,6 @@ import (
 
 const (
 	customersTable      = "customers"
-	adminsTable         = "admins"
 	bookingsTable       = "bookings"
 	paymentMethodsTable = "payment_methods"
 	stationsTable       = "stations"

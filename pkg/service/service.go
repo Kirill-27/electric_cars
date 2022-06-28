@@ -19,9 +19,18 @@ type TodoList interface {
 type TodoItem interface {
 }
 
+type Station interface {
+	Create(station data.Station) (int, error)
+	GetAll() ([]data.Station, error)
+	GetById(stationId int) (data.Station, error)
+	Delete(stationId int) error
+	Update(stationId, station data.Station) error
+}
+
 type Service struct {
 	Authorization
 	TodoList
+	Station
 	TodoItem
 }
 
@@ -30,5 +39,6 @@ func NewService(repos *repository.Repository) *Service {
 		Authorization: NewAuthService(repos),
 		TodoList:      new(TodoList),
 		TodoItem:      new(TodoItem),
+		Station:       NewStationService(repos),
 	}
 }
