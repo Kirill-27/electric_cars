@@ -8,7 +8,13 @@ import (
 )
 
 func (h *Handler) getAllStations(c *gin.Context) {
+	stations, err := h.services.Station.GetAll()
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
 
+	c.JSON(http.StatusOK, stations)
 }
 
 func (h *Handler) getStationById(c *gin.Context) {

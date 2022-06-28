@@ -34,7 +34,12 @@ func (r *StationPostgres) Create(station data.Station) (int, error) {
 }
 
 func (r *StationPostgres) GetAll() ([]data.Station, error) {
-	return []data.Station{}, nil
+	var stations []data.Station
+
+	query := fmt.Sprintf("SELECT * FROM %s", stationsTable)
+	err := r.db.Select(&stations, query)
+
+	return stations, err
 }
 func (r *StationPostgres) GetById(stationId int) (data.Station, error) {
 	var station data.Station
