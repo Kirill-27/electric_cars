@@ -5,20 +5,35 @@ import (
 	"github.com/Kirill-27/electric_cars/pkg/handler"
 	"github.com/Kirill-27/electric_cars/pkg/repository"
 	"github.com/Kirill-27/electric_cars/pkg/service"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	"log"
 )
 
 func main() {
+	logrus.SetFormatter(new(logrus.JSONFormatter))
+
 	if err := initConfig(); err != nil {
-		log.Fatalf("error init config: %s", err.Error())
+		logrus.Fatalf("error init config: %s", err.Error())
 	}
-	repo := repository.NewRepository()
+
+	db, err := repository.NewPostgresDB(repository.Config{
+		Host:     viper.GetString("db.host"),
+		Port:     viper.GetString("db.port"),
+		Username: viper.GetString("db.username"),
+		DBName:   viper.GetString("db.dbname"),
+		SSLMode:  viper.GetString("db.sslmode"),
+		Password: viper.GetString("db.password"),
+	})
+	if err != nil {
+		logrus.Fatalf("failed to init db: %s", err.Error())
+	}
+
+	repo := repository.NewRepository(db)
 	services := service.NewService(repo)
-	handlers := new(handler.Handler)
+	handlers := handler.NewHandler(services)
 	srv := new(electric_cars.Server)
 	if err := srv.Run(viper.GetString("port"), handlers.InitRouters()); err != nil {
-		log.Fatalf("error when run http server: %s", err.Error())
+		logrus.Fatalf("error when run http server: %s", err.Error())
 	}
 
 }
