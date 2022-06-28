@@ -33,5 +33,9 @@ func (r *AuthPostgres) CreateCustomer(customer data.Customer) (int, error) {
 }
 
 func (r *AuthPostgres) GetCustomer(username, password string) (data.Customer, error) {
-	return data.Customer{}, nil
+	var customer data.Customer
+	query := fmt.Sprintf("SELECT id FROM %s WHERE username=$1 AND password=$2", customersTable)
+	err := r.db.Get(&customer, query, username, password)
+
+	return customer, err
 }
