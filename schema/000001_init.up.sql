@@ -35,8 +35,8 @@ CREATE TABLE payment_methods
 CREATE TABLE bookings
 (
     id serial not null unique,
-    user_id  int not null,
     customer_id  int not null,
+    station_id  int not null,
     payment_method_id int not null,
     start_time timestamp without time zone not null,
     end_time timestamp without time zone not null,
