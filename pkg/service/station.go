@@ -29,6 +29,6 @@ func (s *StationService) Delete(stationId int) error {
 	return s.repo.Delete(stationId)
 }
 
-func (s *StationService) Update(stationId, station data.Station) error {
-	return s.repo.Update(stationId, station)
+func (s *StationService) Update(station data.Station) error {
+	return s.repo.Update(station)
 }

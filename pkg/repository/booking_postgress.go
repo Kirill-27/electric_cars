@@ -6,15 +6,15 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-type StationPostgres struct {
+type BookingPostgres struct {
 	db *sqlx.DB
 }
 
-func NewStationPostgres(db *sqlx.DB) *StationPostgres {
-	return &StationPostgres{db: db}
+func NewBookingPostgres(db *sqlx.DB) *BookingPostgres {
+	return &BookingPostgres{db: db}
 }
 
-func (r *StationPostgres) Create(station data.Station) (int, error) {
+func (r *BookingPostgres) Create(station data.Station) (int, error) {
 	var id int
 
 	query := fmt.Sprintf("INSERT INTO %s (is_free, location_x, location_y, value_per_min) "+
@@ -33,7 +33,7 @@ func (r *StationPostgres) Create(station data.Station) (int, error) {
 	return id, nil
 }
 
-func (r *StationPostgres) GetAll() ([]data.Station, error) {
+func (r *BookingPostgres) GetAll() ([]data.Station, error) {
 	var stations []data.Station
 
 	query := fmt.Sprintf("SELECT * FROM %s", stationsTable)
@@ -41,7 +41,7 @@ func (r *StationPostgres) GetAll() ([]data.Station, error) {
 
 	return stations, err
 }
-func (r *StationPostgres) GetById(stationId int) (data.Station, error) {
+func (r *BookingPostgres) GetById(stationId int) (data.Station, error) {
 	var station data.Station
 
 	query := fmt.Sprintf("SELECT * FROM %s WHERE id = $1", stationsTable)
@@ -49,9 +49,9 @@ func (r *StationPostgres) GetById(stationId int) (data.Station, error) {
 
 	return station, err
 }
-func (r *StationPostgres) Delete(stationId int) error {
+func (r *BookingPostgres) Delete(stationId int) error {
 	return nil
 }
-func (r *StationPostgres) Update(station data.Station) error {
+func (r *BookingPostgres) Update(stationId, station data.Station) error {
 	return nil
 }
