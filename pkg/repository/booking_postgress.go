@@ -18,7 +18,7 @@ func NewBookingPostgres(db *sqlx.DB) *BookingPostgres {
 func (r *BookingPostgres) CreateBooking(booking data.Booking) (int, error) {
 	var id int
 
-	query := fmt.Sprintf("INSERT INTO %s (customer_id, payment_method_id, station_id, is_paid, star_time, end_time) "+
+	query := fmt.Sprintf("INSERT INTO %s (customer_id, payment_method_id, station_id, is_paid, start_time, end_time) "+
 		"VALUES ($1, $2, $3, $4, $5, $6) RETURNING id", bookingsTable)
 
 	row := r.db.QueryRow(query,

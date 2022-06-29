@@ -54,7 +54,6 @@ func (h *Handler) getStationById(c *gin.Context) {
 }
 
 func (h *Handler) createStation(c *gin.Context) {
-	//TODO check is admin
 	isActiveAdmin, err := h.isActiveAdmin(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
