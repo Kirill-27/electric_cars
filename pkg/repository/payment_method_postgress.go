@@ -18,12 +18,11 @@ func NewPaymentMethodPostgres(db *sqlx.DB) *PaymentMethodPostgres {
 func (r *PaymentMethodPostgres) Create(paymentMethod data.PaymentMethod) (int, error) {
 	var id int
 
-	query := fmt.Sprintf("INSERT INTO %s (customer_id, details, is_active) VALUES ($1, $2, $3) RETURNING id", paymentMethodsTable)
+	query := fmt.Sprintf("INSERT INTO %s (customer_id, details) VALUES ($1, $2) RETURNING id", paymentMethodsTable)
 
 	row := r.db.QueryRow(query,
 		paymentMethod.CustomerId,
-		paymentMethod.Details,
-		paymentMethod.IsActive)
+		paymentMethod.Details)
 
 	if err := row.Scan(&id); err != nil {
 		return 0, err

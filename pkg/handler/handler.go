@@ -42,6 +42,15 @@ func (h *Handler) InitRouters() *gin.Engine {
 			paymentMethods.PUT("/:id", h.updatePaymentMethod)
 			paymentMethods.DELETE("/:id", h.deletePaymentMethod)
 		}
+
+		//bookings := api.Group("/bookings")
+		//{
+		//	paymentMethods.POST("/", h.createBooking)
+		//	paymentMethods.GET("/", h.getAllBookings)
+		//	paymentMethods.GET("/:id", h.getBookingById)
+		//	paymentMethods.PUT("/:id", h.updateBooking)
+		//	paymentMethods.DELETE("/:id", h.deleteBooking)
+		//}
 	}
 	return router
 }

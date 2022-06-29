@@ -29,10 +29,19 @@ type PaymentMethod interface {
 	Update(paymentMethod data.PaymentMethod) error
 }
 
+type Booking interface {
+	CreateBooking(booking data.Booking) (int, error)
+	GetAllBookings() ([]data.Booking, error)
+	GetBookingById(bookingId int) (*data.Booking, error)
+	DeleteBooking(bookingId int) error
+	UpdateBooking(booking data.Booking) error
+}
+
 type Repository struct {
 	PaymentMethod
 	Authorization
 	Station
+	Booking
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
@@ -40,5 +49,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 		Authorization: NewAuthPostgres(db),
 		Station:       NewStationPostgres(db),
 		PaymentMethod: NewPaymentMethodPostgres(db),
+		Booking:       NewBookingPostgres(db),
 	}
 }

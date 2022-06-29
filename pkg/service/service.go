@@ -31,10 +31,19 @@ type PaymentMethod interface {
 	Update(paymentMethod data.PaymentMethod) error
 }
 
+type Booking interface {
+	CreateBooking(booking data.Booking) (int, error)
+	GetAllBookings() ([]data.Booking, error)
+	GetBookingById(bookingId int) (*data.Booking, error)
+	DeleteBooking(bookingId int) error
+	UpdateBooking(booking data.Booking) error
+}
+
 type Service struct {
 	Authorization
 	Station
 	PaymentMethod
+	Booking
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -42,5 +51,6 @@ func NewService(repos *repository.Repository) *Service {
 		Authorization: NewAuthService(repos),
 		Station:       NewStationService(repos),
 		PaymentMethod: NewPaymentMethodService(repos),
+		Booking:       NewBookingService(repos),
 	}
 }
