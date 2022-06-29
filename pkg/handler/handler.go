@@ -36,10 +36,10 @@ func (h *Handler) InitRouters() *gin.Engine {
 
 		paymentMethods := api.Group("/payment_methods")
 		{
-			//paymentMethods.POST("/", h.createPaymentMethod)
+			paymentMethods.POST("/", h.createPaymentMethod)
 			paymentMethods.GET("/", h.getAllPaymentMethods)
 			paymentMethods.GET("/:id", h.getPaymentMethodById)
-			//paymentMethods.PUT("/:id", h.updatePaymentMethod)
+			paymentMethods.PUT("/:id", h.updatePaymentMethod)
 			paymentMethods.DELETE("/:id", h.deletePaymentMethod)
 		}
 	}
