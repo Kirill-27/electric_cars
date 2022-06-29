@@ -3,7 +3,7 @@ package data
 import "time"
 
 type Booking struct {
-	Id              int       `json:"-" db:"id"`
+	Id              int       `json:"id" db:"id"`
 	CustomerId      int       `json:"customer_id" db:"customer_ids" binding:"required"`
 	StationId       string    `json:"station_id" db:"station_id" binding:"required"`
 	PaymentMethodId string    `json:"payment_method_id" db:"payment_method_id" binding:"required"`

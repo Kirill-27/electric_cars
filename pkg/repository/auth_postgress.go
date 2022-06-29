@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"database/sql"
 	"fmt"
 	"github.com/Kirill-27/electric_cars/data"
 	"github.com/jmoiron/sqlx"
@@ -32,12 +33,23 @@ func (r *AuthPostgres) CreateCustomer(customer data.Customer) (int, error) {
 	return id, nil
 }
 
-func (r *AuthPostgres) GetCustomer(username, password string) (data.Customer, error) {
+func (r *AuthPostgres) GetCustomer(username, password string) (*data.Customer, error) {
 	var customer data.Customer
 	query := fmt.Sprintf("SELECT id FROM %s WHERE username=$1 AND password=$2", customersTable)
 	err := r.db.Get(&customer, query, username, password)
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
 
-	return customer, err
+	return &customer, err
+}
+
+func (r *AuthPostgres) GetCustomerById(id int) (*data.Customer, error) {
+	var customer data.Customer
+	query := fmt.Sprintf("SELECT * FROM %s WHERE id=$1", customersTable)
+	err := r.db.Get(&customer, query, id)
+
+	return &customer, err
 }
 
 func (r *AuthPostgres) UpdateCustomer(customer data.Customer) error {

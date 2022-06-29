@@ -5,11 +5,14 @@ import (
 	"fmt"
 	"github.com/Kirill-27/electric_cars/data"
 	"github.com/jmoiron/sqlx"
+	"math"
 )
 
 type StationPostgres struct {
 	db *sqlx.DB
 }
+
+const maxLength = float64(1000000000)
 
 func NewStationPostgres(db *sqlx.DB) *StationPostgres {
 	return &StationPostgres{db: db}
@@ -65,4 +68,25 @@ func (r *StationPostgres) DeleteStation(stationId int) error {
 	query := fmt.Sprintf("DELETE FROM %s WHERE id=$1", stationsTable)
 	_, err := r.db.Exec(query, stationId)
 	return err
+}
+
+func (r *StationPostgres) GetNearestStation(x, y float64) (*data.Station, error) {
+	var stations []data.Station
+
+	query := fmt.Sprintf("SELECT * FROM %s", stationsTable)
+	err := r.db.Select(&stations, query)
+	if err != nil {
+		return nil, err
+	}
+
+	var res data.Station
+	length := maxLength
+	for _, st := range stations {
+		dif := math.Sqrt((x-st.LocationX)*(x-st.LocationX) + (y-st.LocationY)*(y-st.LocationY))
+		if dif < length {
+			length = dif
+			res = st
+		}
+	}
+	return &res, nil
 }

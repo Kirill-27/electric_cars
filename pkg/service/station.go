@@ -32,3 +32,7 @@ func (s *StationService) DeleteStation(stationId int) error {
 func (s *StationService) UpdateStation(station data.Station) error {
 	return s.repo.UpdateStation(station)
 }
+
+func (s *StationService) GetNearestStation(x, y float64) (*data.Station, error) {
+	return s.repo.GetNearestStation(x, y)
+}

@@ -11,11 +11,13 @@ type Authorization interface {
 	CreateCustomer(user data.Customer) (int, error)
 	GenerateToken(username, password string) (string, error)
 	ParseToken(token string) (int, error)
+	GetCustomerById(id int) (*data.Customer, error)
 }
 
 type Station interface {
 	CreateStation(station data.Station) (int, error)
 	GetAllStations() ([]data.Station, error)
+	GetNearestStation(x, y float64) (*data.Station, error)
 	GetStationById(stationId int) (*data.Station, error)
 	DeleteStation(stationId int) error
 	UpdateStation(station data.Station) error

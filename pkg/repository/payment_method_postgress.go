@@ -16,7 +16,20 @@ func NewPaymentMethodPostgres(db *sqlx.DB) *PaymentMethodPostgres {
 }
 
 func (r *PaymentMethodPostgres) Create(paymentMethod data.PaymentMethod) (int, error) {
-	return 1, nil
+	var id int
+
+	query := fmt.Sprintf("INSERT INTO %s (customer_id, details, is_active) VALUES ($1, $2, $3) RETURNING id", paymentMethodsTable)
+
+	row := r.db.QueryRow(query,
+		paymentMethod.CustomerId,
+		paymentMethod.Details,
+		paymentMethod.IsActive)
+
+	if err := row.Scan(&id); err != nil {
+		return 0, err
+	}
+
+	return id, nil
 }
 
 func (r *PaymentMethodPostgres) GetAll() ([]data.PaymentMethod, error) {
@@ -47,5 +60,7 @@ func (r *PaymentMethodPostgres) Delete(paymentMethodId int) error {
 }
 
 func (r *PaymentMethodPostgres) Update(paymentMethod data.PaymentMethod) error {
-	return nil
+	query := fmt.Sprintf("UPDATE %s SET customer_id=$1, details=$2, is_active=$3 WHERE id=$4 ", paymentMethodsTable)
+	_, err := r.db.Exec(query, paymentMethod.CustomerId, paymentMethod.Details, paymentMethod.IsActive, paymentMethod.Id)
+	return err
 }

@@ -35,6 +35,9 @@ func (s *AuthService) GenerateToken(username, password string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	if customer == nil {
+		return "", errors.New("wrong username or password")
+	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
 		jwt.StandardClaims{
@@ -65,4 +68,8 @@ func (s *AuthService) ParseToken(accessToken string) (int, error) {
 	}
 
 	return claims.CustomerId, nil
+}
+
+func (s *AuthService) GetCustomerById(id int) (*data.Customer, error) {
+	return s.repo.GetCustomerById(id)
 }

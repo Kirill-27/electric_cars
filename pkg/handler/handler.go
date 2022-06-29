@@ -28,9 +28,19 @@ func (h *Handler) InitRouters() *gin.Engine {
 		{
 			stations.POST("/", h.createStation)
 			stations.GET("/", h.getAllStations)
+			stations.GET("/nearest/:x/:y", h.getNearestStations)
 			stations.GET("/:id", h.getStationById)
 			stations.PUT("/:id", h.updateStation)
 			stations.DELETE("/:id", h.deleteStation)
+		}
+
+		paymentMethods := api.Group("/payment_methods")
+		{
+			//paymentMethods.POST("/", h.createPaymentMethod)
+			paymentMethods.GET("/", h.getAllPaymentMethods)
+			paymentMethods.GET("/:id", h.getPaymentMethodById)
+			//paymentMethods.PUT("/:id", h.updatePaymentMethod)
+			paymentMethods.DELETE("/:id", h.deletePaymentMethod)
 		}
 	}
 	return router
