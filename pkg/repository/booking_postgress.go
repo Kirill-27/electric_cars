@@ -64,5 +64,7 @@ func (r *BookingPostgres) DeleteBooking(bookingId int) error {
 }
 
 func (r *BookingPostgres) UpdateBooking(booking data.Booking) error {
-	return nil
+	query := fmt.Sprintf("UPDATE %s SET payment_method_id=$1, end_time=$2, start_time=$3 WHERE id=$4 ", bookingsTable)
+	_, err := r.db.Exec(query, booking.PaymentMethodId, booking.EndTime, booking.StartTime, booking.Id)
+	return err
 }

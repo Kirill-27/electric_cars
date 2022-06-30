@@ -57,10 +57,9 @@ func (r *StationPostgres) GetStationById(stationId int) (*data.Station, error) {
 	return &station, err
 }
 
-//TODO chech this
 func (r *StationPostgres) UpdateStation(station data.Station) error {
-	query := fmt.Sprintf("UPDATE %s SET is_free=$1, location_x=$2, location_y=$3, value_per_min=$4 WHERE id=$5 ", stationsTable)
-	_, err := r.db.Exec(query, station.IsFree, station.LocationX, station.LocationY, station.ValuePerMin, station.Id)
+	query := fmt.Sprintf("UPDATE %s SET is_free=$1, location_x=$2, location_y=$3, value_per_min=$4, is_active=$5 WHERE id=$6 ", stationsTable)
+	_, err := r.db.Exec(query, station.IsFree, station.LocationX, station.LocationY, station.ValuePerMin, station.IsActive, station.Id)
 	return err
 }
 

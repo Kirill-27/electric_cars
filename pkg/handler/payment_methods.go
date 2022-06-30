@@ -125,7 +125,7 @@ func (h *Handler) updatePaymentMethod(c *gin.Context) {
 		return
 	}
 
-	if err := c.BindJSON(&paymentMethog); err != nil {
+	if err := c.BindJSON(paymentMethog); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -142,5 +142,5 @@ func (h *Handler) updatePaymentMethod(c *gin.Context) {
 		return
 	}
 
-	c.Render(http.StatusNoContent, nil)
+	c.JSON(http.StatusNoContent, nil)
 }

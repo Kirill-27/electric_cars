@@ -54,12 +54,12 @@ func (h *Handler) deleteBooking(c *gin.Context) {
 		return
 	}
 
-	station, err := h.services.Booking.GetBookingById(id)
+	booking, err := h.services.Booking.GetBookingById(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	if station == nil {
+	if booking == nil {
 		newErrorResponse(c, http.StatusNotFound, "booking with this id to del was not found")
 		return
 	}
@@ -103,15 +103,39 @@ func (h *Handler) createBooking(c *gin.Context) {
 }
 
 func (h *Handler) updateBooking(c *gin.Context) {
-	isActiveAdmin, err := h.isActiveAdmin(c)
+	customerId, err := getCustomerId(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	if !isActiveAdmin {
-		newErrorResponse(c, http.StatusUnauthorized, "you are not active admin")
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
 		return
 	}
-	
+
+	booking, err := h.services.Booking.GetBookingById(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	if booking == nil {
+		newErrorResponse(c, http.StatusNotFound, "booking with this id to del was not found")
+		return
+	}
+
+	if err := c.BindJSON(&booking); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	if booking.CustomerId != customerId {
+		newErrorResponse(c, http.StatusBadRequest, "wrong customer id")
+		return
+	}
+
+	h.services.Booking.UpdateBooking(*booking)
+
 	c.Render(http.StatusNoContent, nil)
 }

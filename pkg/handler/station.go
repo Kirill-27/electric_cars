@@ -156,7 +156,7 @@ func (h *Handler) updateStation(c *gin.Context) {
 		return
 	}
 
-	c.Render(http.StatusNoContent, nil)
+	c.JSON(http.StatusNoContent, nil)
 }
 
 func (h *Handler) isActiveAdmin(c *gin.Context) (bool, error) {
