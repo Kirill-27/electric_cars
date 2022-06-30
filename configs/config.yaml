@@ -1,0 +1,9 @@
+port: 8002
+
+db:
+  username: "cars"
+  host: "localhost"
+  port: "5435"
+  dbname: "cars"
+  sslmode: "disable"
+  password: "cars"
